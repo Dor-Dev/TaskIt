@@ -1,0 +1,15 @@
+
+.custom-toolbar{
+    height: 300px;
+    align-items: center;
+    justify-content: center;
+}
+ .home-page{
+    align-items: center;
+    width: auto;
+    font-size: 36px;
+ }
+ .toolbar-container{
+    display: flex;
+    
+ }

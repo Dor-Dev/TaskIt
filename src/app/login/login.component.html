@@ -1,31 +1,43 @@
-<mat-grid-list cols="1" rows="1" rowHeight="2:1">
-    <mat-grid-tile>
-        <mat-card style="align-items: center;">
-            <mat-card-header >
-                <mat-card-title >
-                    <mat-label>Login</mat-label>
-                </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <form [formGroup]="signin">
-                    <mat-form-field style="width:100%;">
+<div class="login-container">
+    <mat-card class="login-card">
+        <mat-card-header class="my-login-header">
+            <mat-card-title>
+                <h2>Login</h2>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="my-form">
+                <div>
+                    <span style="display: flex;margin-bottom: 10px;">Email</span>
+                    <mat-form-field appearance="fill">
+
                         <mat-label>Enter your email</mat-label>
-                        <input matInput placeholder="pat@example.com" formControlName="email" required>
+                        <input matInput placeholder="pat@example.com" required><!--[formControl]="email"-->
                         <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
                     </mat-form-field>
-                    <mat-form-field style="width: 100%;">
+                </div>
+                <div style="margin-top: 10px;">
+                    <span style="display: flex;margin-bottom: 10px;">Password</span>
+                    <mat-form-field appearance="fill">
+
                         <mat-label>Enter your password</mat-label>
-                        <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password" required>
-                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <input matInput [type]="hide ? 'password' : 'text'">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide" required>
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                     </mat-form-field>
-                </form> 
-            </mat-card-content>
-            
-            <mat-card-actions>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <div class="login-buttons">
+                <span>
+                    <button mat-flat-button color="primary">Login</button>
+                    <button mat-flat-button color="primary" style="margin-left:8px">Register</button>
+                </span>
 
-            </mat-card-actions>  
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
