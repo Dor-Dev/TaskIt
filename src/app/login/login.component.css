@@ -1,21 +1,25 @@
 
 
-.login-container{
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  flex-flow: row wrap;
-  margin-top: 2%;
-}
 .login-card{
-  
-  width: 400px;
   height: 500px;
-  text-align: center;
-  align-items: center;
+  border-radius: 0.3cm;
   box-shadow: 0px 0px 10px 0px #9b9b9b,
-        0 1px 1px 0 #9b9b9b,
-        0 1px 3px 0 #9b9b9b;
+        0 2px 2px 0 #9b9b9b,
+        0 2px 2px 0 #9b9b9b;
+}
+.google-login-btn {
+  background-image: url('../../assets/google-logo.png');
+  background-repeat: no-repeat;
+  background-size: 20%;
+  background-position: 10%;
+  padding-left: 15%;
+}
+.logo{
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-color: rgba(0, 0, 0, 0);
+      
+      
 }
 .my-form > div > mat-form-field{
   align-items: center;
@@ -24,13 +28,10 @@
   
 }
 
-.my-login-header{
-  margin-bottom: 50px;
-}
+
 .login-buttons{
   margin-top: 10px;
   align-items: right;
-  
   
 }
 

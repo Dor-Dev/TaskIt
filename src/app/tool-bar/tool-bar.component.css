@@ -1,15 +1,15 @@
 
-.custom-toolbar{
-    height: 300px;
-    align-items: center;
-    justify-content: center;
-}
- .home-page{
-    align-items: center;
-    width: auto;
-    font-size: 36px;
+.spacer {
+   flex: 1 1 auto;
  }
- .toolbar-container{
-    display: flex;
-    
+ 
+ img {
+   height: 200px;
+   margin: 0px;
+ }
+ mat-toolbar{
+   height: 150px;
+ }
+ .my-toolbar{
+  background-color: rgba(1, 1, 1, 0.5);
  }

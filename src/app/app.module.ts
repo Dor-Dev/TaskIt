@@ -2,7 +2,10 @@
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatDividerModule} from '@angular/material/divider';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {ReactiveFormsModule} from '@angular/forms'
@@ -19,34 +22,45 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { TodoComponent } from './todo/todo.component';
-import { TodayComponent } from './today/today.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { TaskDialogComponent } from './task-dialog/task-dialog.component';
+import { MatNativeDateModule } from '@angular/material/core';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ToolBarComponent,
     TodoComponent,
-    TodayComponent
+    TaskDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MatGridListModule,
     MatFormFieldModule,
+    FormsModule,
     MatInputModule,
     ReactiveFormsModule,
     MatCardModule,
     MatIconModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    MatDatepickerModule,
     MatButtonModule,
     MatProgressBarModule,
     MatToolbarModule,
-    DragDropModule
+    DragDropModule,
+    MatDividerModule,
+    MatDialogModule,
+    ScrollingModule,
+    MatExpansionModule,MatNativeDateModule
     
   ],
-  providers: [],
+  providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
