@@ -29,6 +29,13 @@ import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 
 
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +45,11 @@ import { MatNativeDateModule } from '@angular/material/core';
     TaskDialogComponent
   ],
   imports: [
+    AngularFireModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    AngularFirestoreModule,
+    AngularFireDatabaseModule,
     BrowserModule,
     AppRoutingModule,
     MatGridListModule,

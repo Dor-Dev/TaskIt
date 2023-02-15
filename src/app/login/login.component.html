@@ -1,47 +1,107 @@
-<div fxLayout="row" fxLayout.xs="column" fxFill fxLayoutAlign="center center" fxLayoutGap="5px">
+<div fxLayout="row" fxFill fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutGap="5px" class="main-div">
 
-    <div fxFlex="50%" fxLayoutAlign="center center">
+    <div fxFlex="50%" fxLayoutAlign="center center" class="logo-div">
         <img src="../../assets/new-logo.png" fxLayoutGap="5px" [style.xs]="'margin: 0 auto;'" fxFlex.xs="80%"
             fxFlex.sm="80%" fxFlex.md="80%" fxFlex.lg="80%" fxFlex.xl="100%" class="logo" alt="logo">
     </div>
-    <div fxFlex="50%" fxLayoutAlign="center center">
-        <mat-card class="mat-elevation-z4 login-card" fxLayout="column" fxFlex.xs="100%" fxFlex.sm="100%"
-            fxFlex.md="80%" fxFlex.lg="80%" fxFlex.xl="100%" fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex="50%" fxLayoutAlign="center center" class="login-div" style="height:100%;">
+        <mat-card class="mat-elevation-z4 login-card" fxLayout="column" fxFlex.xs="100%" fxFlex.sm="80%" fxFlex.md="80%"
+            fxFlex.lg="80%" fxFlex.xl="60%" fxLayout="column" fxLayoutAlign="center center" *ngIf="loginForm">
             <mat-card-header fxLayout=" row" fxLayoutAlign="center center">
                 <mat-card-title>
                     <h2>Login</h2>
                 </mat-card-title>
             </mat-card-header>
-            <mat-card-content fxLayoutGap="300px">
-                <div class="my-form">
-                    <div>
-                        <span style="display: flex;margin-bottom: 10px;">Email</span>
-                        <mat-form-field appearance="fill">
+            <mat-card-content fxLayoutGap="30px" fxLayoutAlign="center center" fxLayout="column">
 
-                            <mat-label>Enter your email</mat-label>
-                            <input matInput placeholder="pat@example.com" required><!--[formControl]="email"-->
-                            <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
-                        </mat-form-field>
-                    </div>
-                    <div style="margin-top: 10px;">
-                        <span style="display: flex;margin-bottom: 10px;">Password</span>
-                        <mat-form-field appearance="fill">
+                <form #loginForm="ngForm">
+                    <div class="my-form">
+                        <div>
+                            <span style="display: flex;margin-bottom: 10px;">Email</span>
+                            <mat-form-field appearance="fill">
 
-                            <mat-label>Enter your password</mat-label>
-                            <input matInput [type]="hide ? ' password' : 'text'">
-                            <button mat-icon-button matSuffix (click)=" hide=!hide" [attr.aria-label]="'Hide password'"
-                                [attr.aria-pressed]="hide" required>
-                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                            </button>
-                        </mat-form-field>
+                                <mat-label>Enter your email</mat-label>
+                                <input matInput [(ngModel)]="email" name="username" placeholder="pat@example.com"
+                                    required><!--[formControl]="email"-->
+                                <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
+                            </mat-form-field>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span style="display: flex;margin-bottom: 10px;">Password</span>
+                            <mat-form-field appearance="fill">
+
+                                <mat-label>Enter your password</mat-label>
+                                <input matInput [(ngModel)]="password" name="password"
+                                    [type]="hide ? 'password' : 'text'">
+                                <button mat-icon-button matSuffix (click)=" hide=!hide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" required>
+                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
                     </div>
-                </div>
+                </form>
             </mat-card-content>
             <mat-card-actions align="end">
                 <div fxLayout="col" fxLayoutGap="10px" class="login-buttons">
-                    <button mat-flat-button color="primary">Login</button>
-                    <button mat-flat-button color="primary" style="margin-left:8px">Register</button>
-                    <button mat-flat-button color="primary" class="google-login-btn">Google</button>
+                    <button mat-flat-button color="primary" (click)="login()">Login</button>
+                    <button mat-flat-button color="primary" style="margin-left:8px"
+                        (click)="toggleLogin()">Register</button>
+                    <button mat-flat-button color="primary" class="google-login-btn"
+                        (click)="loginWithGoogle()">Google</button>
+                </div>
+
+            </mat-card-actions>
+        </mat-card>
+        <mat-card class="mat-elevation-z4 login-card" fxLayout="column" fxFlex.xs="100%" fxFlex.sm="80%" fxFlex.md="80%"
+            fxFlex.lg="80%" fxFlex.xl="60%" fxLayout="column" fxLayoutAlign="center center" *ngIf="!loginForm">
+            <mat-card-header fxLayout=" row" fxLayoutAlign="center center">
+                <mat-card-title>
+                    <h2>Register</h2>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content fxLayoutGap="30px" fxLayoutAlign="center center" fxLayout="column">
+
+                <form #registerForm="ngForm">
+                    <div class="my-form">
+                        <div>
+                            <span style="display: flex;margin-bottom: 10px;">User Name</span>
+                            <mat-form-field appearance="fill">
+
+                                <mat-label>Enter your user Name</mat-label>
+                                <input matInput [(ngModel)]="userName" name="username" placeholder="Enter User Name"
+                                    required>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <span style="display: flex;margin-bottom: 10px;">Email</span>
+                            <mat-form-field appearance="fill">
+
+                                <mat-label>Enter your email</mat-label>
+                                <input matInput [(ngModel)]="email" name="email" placeholder="pat@example.com" required>
+                            </mat-form-field>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span style="display: flex;margin-bottom: 10px;">Password</span>
+                            <mat-form-field appearance="fill">
+
+                                <mat-label>Enter your password</mat-label>
+                                <input matInput [(ngModel)]="password" name="password"
+                                    [type]="hide ? 'password' : 'text'">
+                                <button mat-icon-button matSuffix (click)=" hide=!hide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" required>
+                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <div fxLayout="col" fxLayoutGap="10px" class="login-buttons">
+                    <button mat-flat-button color="primary" (click)="toggleLogin()">Back to Login</button>
+                    <button mat-flat-button color="primary" style="margin-left:8px" (click)="signUp()">Register</button>
+
                 </div>
 
             </mat-card-actions>

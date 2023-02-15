@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-tool-bar',
@@ -6,5 +8,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./tool-bar.component.css']
 })
 export class ToolBarComponent {
+  constructor(private authService: AuthService, private router:Router){}
 
+  public logout():void{
+    console.log("HELLLOOOO");
+    
+    this.authService.logout();
+    this.router.navigate(['../login']);
+  }
 }
