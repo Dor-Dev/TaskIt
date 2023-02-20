@@ -25,20 +25,19 @@
                 </div>
                 <mat-divider fxLayoutAlign="center center" class="divider"></mat-divider>
 
-                <div cdkDropList #backlogList="cdkDropList" [cdkDropListData]="backlog"
-                    (cdkDropListDropped)="drop($event)" class="task-list-todo" [cdkDropListConnectedTo]="[todoList]">
-                    <mat-card fxLayout="col" class="backlog-tasks" *ngFor="let item of backlog" cdkDrag>
+                <div cdkDropList #backlogList="cdkDropList" [cdkDropListData]="tasks"
+                    (cdkDropListDropped)="onDrop($event,'backlog')" class="task-list-todo"
+                    [cdkDropListConnectedTo]="[todoList]">
+                    <mat-card fxLayout="col" class="backlog-tasks" *ngFor="let item of tasks | async" cdkDrag>
                         <div fxFlex>
                             <div fxLayout="row" class="card-header">
-                                <mat-card-header fxLayoutAlign="left top" style="font-size: 11px;">Task
-                                    #{{item.id}}</mat-card-header>
+                                <mat-card-header fxLayoutAlign="left top" style="font-size: 11px;"></mat-card-header>
                             </div>
                             <div fxLayout="row">
                                 <mat-card-content>{{item.description}}</mat-card-content>
                             </div>
                             <div fxLayout="row">
-                                status: {{item.status
-                                }}
+                                status:
                             </div>
                             <mat-card-actions>
 
@@ -78,17 +77,16 @@
                 <mat-divider fxLayoutAlign="center center" class="divider"></mat-divider>
 
 
-                <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" class="task-list-todo "
-                    (cdkDropListDropped)="drop($event)" [cdkDropListConnectedTo]="[backlogList,inProgressList]">
-                    <mat-card fxLayout="column" class="backlog-tasks" *ngFor="let item of todo" cdkDrag>
+                <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="tasks" class="task-list-todo "
+                    (cdkDropListDropped)="onDrop($event,'todo')"
+                    [cdkDropListConnectedTo]="[backlogList,inProgressList]">
+                    <mat-card fxLayout="column" class="backlog-tasks" *ngFor="let item of tasks | async" cdkDrag>
                         <div fxFlex>
                             <div fxLayout="row" class="card-header">
-                                <mat-card-header fxLayoutAlign="left top"
-                                    style="font-size: 11px;">{{item.id}}</mat-card-header>
+                                <mat-card-header fxLayoutAlign="left top" style="font-size: 11px;"></mat-card-header>
                             </div>
                             <div fxLayout="row" flexLayoutAlign="center center">
-                                <mat-card-content
-                                    flexLayoutAlign="center center">{{item.description}}</mat-card-content>
+                                <mat-card-content flexLayoutAlign="center center"></mat-card-content>
                             </div>
                             <div fxLayout="row">
 
@@ -129,13 +127,12 @@
                 <mat-divider fxLayoutAlign="center center" class="divider"></mat-divider>
 
 
-                <div cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="in_progress" class="task-list-todo "
-                    (cdkDropListDropped)="drop($event)" [cdkDropListConnectedTo]="[todoList,doneList]">
-                    <mat-card fxLayout="column" class="backlog-tasks" *ngFor="let item of in_progress" cdkDrag>
+                <div cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="tasks" class="task-list-todo "
+                    (cdkDropListDropped)="onDrop($event,'inProgress')" [cdkDropListConnectedTo]="[todoList,doneList]">
+                    <mat-card fxLayout="column" class="backlog-tasks" *ngFor="let item of tasks | async" cdkDrag>
                         <div fxFlex>
                             <div fxLayout="row" class="card-header">
-                                <mat-card-header fxLayoutAlign="left top"
-                                    style="font-size: 11px;">{{item.id}}</mat-card-header>
+                                <mat-card-header fxLayoutAlign="left top" style="font-size: 11px;"></mat-card-header>
                             </div>
                             <div fxLayout="row" flexLayoutAlign="center center">
                                 <mat-card-content
@@ -181,13 +178,13 @@
                 <mat-divider fxLayoutAlign="center center" class="divider"></mat-divider>
 
 
-                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" class="task-list-todo "
-                    (cdkDropListDropped)="drop($event)" [cdkDropListConnectedTo]="[backlogList,inProgressList]">
-                    <mat-card fxLayout="column" class="backlog-tasks" *ngFor="let item of done" cdkDrag>
+                <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="tasks " class="task-list-todo "
+                    (cdkDropListDropped)="onDrop($event,'done')"
+                    [cdkDropListConnectedTo]="[backlogList,inProgressList]">
+                    <mat-card fxLayout="column" class="backlog-tasks" *ngFor="let item of tasks | async" cdkDrag>
                         <div fxFlex>
                             <div fxLayout="row" class="card-header">
-                                <mat-card-header fxLayoutAlign="left top"
-                                    style="font-size: 11px;">{{item.id}}</mat-card-header>
+                                <mat-card-header fxLayoutAlign="left top" style="font-size: 11px;"></mat-card-header>
                             </div>
                             <div fxLayout="row" flexLayoutAlign="center center">
                                 <mat-card-content

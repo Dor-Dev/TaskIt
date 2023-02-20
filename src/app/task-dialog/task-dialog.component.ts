@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ITask } from '../model/task';
+import { Title } from '@angular/platform-browser';
+import { Task } from '../model/task';
 @Component({
   selector: 'app-task-dialog',
   templateUrl: './task-dialog.component.html',
@@ -9,26 +10,26 @@ import { ITask } from '../model/task';
 })
 export class TaskDialogComponent implements OnInit{
   task_form!: FormGroup;
-
-  taskToCreate: ITask = {} as ITask;
-  myFilter = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 6;
-  };
+  taskToCreate: Task = {} as Task;
+  // myFilter = (d: Date | null): boolean => {
+  //   const day = (d || new Date()).getDay();
+  //   // Prevent Saturday and Sunday from being selected.
+  //   return day !== 0 && day !== 6;
+  // };
+important: boolean = false;
   constructor(private fb: FormBuilder,
-    private dialogRef: MatDialogRef<TaskDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: ITask) {}
+    private dialogRef: MatDialogRef<TaskDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: Task) {}
   
     
     
-    ngOnInit() {
+ngOnInit() {
       this.task_form = this.fb.group({
-          description: ['',Validators.required]
-          
+          description: ['',Validators.required],
+          title: ['',Validators.required]
       });
   }
 
-  save() {
+save() {
     this.dialogRef.close(this.task_form.value);
 }
 

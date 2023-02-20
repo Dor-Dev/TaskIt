@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AuthService} from './../auth.service'
+import {AuthService} from '../services/auth.service'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../User';
 import { Router } from '@angular/router';
@@ -20,10 +20,18 @@ export class LoginComponent {
   constructor(private authService : AuthService , private router:Router){}
 
   public login(): void {
-   const user =  this.authService.logIn({email: this.email , password: this.password})
-   this.resetForm();
-   console.log("LOGIN : " ,user);
-   this.router.navigate(['../todo']);
+    try {
+      const user:any =  this.authService.logIn({email: this.email , password: this.password})
+      this.resetForm();
+      console.log(user);
+      
+      // this.router.navigate(['../todo']);
+    } catch (error) {
+      console.log("ERRRORR");
+      throw error;
+    }
+   
+   
    
   }
 
@@ -32,7 +40,7 @@ export class LoginComponent {
       const user = this.authService.signUp({email: this.email , password: this.password, userName: this.userName});
       this.resetForm();
       console.log("Sign Up",user);
-      this.router.navigate(['../todo']);
+      this.router.navigate(['../task-table']);
     } catch (error) {
       console.log("Failed to SignUP")
     }
@@ -59,7 +67,7 @@ export class LoginComponent {
     const user = result.user;
     console.log("Credentials: " , credential, "\nUser: ", user);
     this.authService._saveLocalUser(user);
-    this.router.navigate(['../todo']);
+    this.router.navigate(['../task-table']);
   }).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;

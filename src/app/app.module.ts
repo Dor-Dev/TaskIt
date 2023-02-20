@@ -2,6 +2,7 @@
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
+import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
@@ -27,14 +28,16 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
-
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTableModule} from '@angular/material/table';
+import { environment } from 'src/environments/environment.development';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-
+import { TaskTableComponent } from './task-table/task-table.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -42,20 +45,25 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
     LoginComponent,
     ToolBarComponent,
     TodoComponent,
-    TaskDialogComponent
+    TaskDialogComponent,
+    TaskTableComponent
   ],
   imports: [
-    AngularFireModule,
+    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    MatPaginatorModule,
+    MatSelectModule,
     AngularFireStorageModule,
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     BrowserModule,
+    MatCheckboxModule,
     AppRoutingModule,
     MatGridListModule,
     MatFormFieldModule,
     FormsModule,
     MatInputModule,
+    MatTableModule,
     ReactiveFormsModule,
     MatCardModule,
     MatIconModule,

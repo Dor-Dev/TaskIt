@@ -1,9 +1,15 @@
 import { Component, Inject } from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import { ITask } from '../model/task';
+import { Task } from '../model/task';
 import {MatDialog, MatDialogConfig, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
-
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+import {auth} from '../firebase/firebase'
+import { environment } from 'src/environments/environment.development';
+import { AuthService } from '../services/auth.service';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo',
@@ -11,35 +17,42 @@ import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
   styleUrls: ['./todo.component.scss']
 })
 export class TodoComponent {
-  taskID = 0;
-  todo : ITask[]= [];
-  in_progress : ITask[]= [] ;
-  done : ITask[]= [];
-  backlog : ITask[]= [] ;
+  value = 'Clear me';
+  toDoSubjects=['Backlog','ToDo','In Progress' ,'Done'];
+  backlog_card =false;
+
+  private tasksCollection: AngularFirestoreCollection<Task>;
+  tasks: Observable<Task[]>;
+  
+  todo: Task[] = [];
+  inProgress: Task[] = [];
+  done: Task[] =[];
 
   // todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
   // in_progress = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
   // done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
   //  backlog = ["Buy 2 Milk.","Call my wife at 14:00.","Buy food for Mikey","Go to buy charger !!!","Print the flight documents","Buy 2 Milk.","Call my wife at 14:00.","Buy food for Mikey","Go to buy charger !!!","Print the flight documents"];
 
-  constructor(public dialog: MatDialog) {}
-
-value = 'Clear me';
-toDoSubjects=['Backlog','ToDo','In Progress' ,'Done'];
-backlog_card =false;
-
-drop(event: CdkDragDrop<ITask[]>) {
-  if (event.previousContainer === event.container) {
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-  } else {
-    transferArrayItem(
-      event.previousContainer.data,
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex,
-    );
+  constructor(public dialog: MatDialog,public afs: AngularFirestore,private authService : AuthService) {
+    this.tasksCollection = this.afs.collection<Task>('tasks');
+    this.tasks = this.tasksCollection.valueChanges();
   }
-}
+
+  ngOnInit(){
+    
+  }
+
+
+
+
+
+
+
+
+  onDrop(event: CdkDragDrop<Observable<Task[]>, any, any>, column: string) {
+    
+  }
+
 
 openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
   const dialogConfig = new MatDialogConfig();
@@ -55,17 +68,16 @@ openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void 
   
   dialogRef.afterClosed().subscribe(
     res => {
-     this.backlog.push({
-      id: this.taskID++,
-      description: res['description'],
-      status: "todo"
-
-     });
-      console.log("Dialog output:", res['description']);
       
-    }
-    
-); 
+      this.afs.collection('tasks').add({
+        title: res['title'],
+       description: res['description'],
+       column: "backlog",
+       userID: this.authService.getLoggedinUser().id
+      }).then((res)=>{
+        //AFTER SAVING THE TASK IN FIRESTORE 
+      });
+      
+});
 }
-
 }

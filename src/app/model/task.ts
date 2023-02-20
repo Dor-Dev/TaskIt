@@ -1,10 +1,8 @@
-export interface ITask{
-    id: number;
+export interface Task {
+    index: number,
+    userID : string,
     description: string;
-    // title:string;
+    date: Date;
     status: string;
-    // date: Date;
-    // done: boolean;
-    
-    
-}
+  }
+  
