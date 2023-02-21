@@ -9,31 +9,19 @@ import { Task } from '../model/task';
   styleUrls: ['./task-dialog.component.css']
 })
 export class TaskDialogComponent implements OnInit{
-  task_form!: FormGroup;
-  taskToCreate: Task = {} as Task;
-  // myFilter = (d: Date | null): boolean => {
-  //   const day = (d || new Date()).getDay();
-  //   // Prevent Saturday and Sunday from being selected.
-  //   return day !== 0 && day !== 6;
-  // };
-important: boolean = false;
-  constructor(private fb: FormBuilder,
-    private dialogRef: MatDialogRef<TaskDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: Task) {}
-  
-    
-    
-ngOnInit() {
-      this.task_form = this.fb.group({
-          description: ['',Validators.required],
-          title: ['',Validators.required]
-      });
+  constructor(
+    public dialogRef: MatDialogRef<TaskDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
   }
 
-save() {
-    this.dialogRef.close(this.task_form.value);
-}
-
-close() {
+  onCancelClick(): void {
     this.dialogRef.close();
-}
+  }
+
+  onSaveClick(): void {
+    this.dialogRef.close(this.data);
+  }
 }

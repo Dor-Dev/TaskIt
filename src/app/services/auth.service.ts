@@ -46,21 +46,7 @@ export class AuthService {
    
     
   }
-  // SetUserData(user: any) {
-  //   const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-  //     `users/${user.uid}`
-  //   );
-  //   const userData: User = {
-  //     uid: user.uid,
-  //     email: user.email,
-  //     displayName: user.displayName,
-  //     photoURL: user.photoURL,
-  //     emailVerified: user.emailVerified,
-  //   };
-  //   return userRef.set(userData, {
-  //     merge: true,
-  //   });
-  // }
+
   public isLoggedIn(){
     return sessionStorage.getItem('user') !== null;
   }
@@ -100,7 +86,7 @@ public _saveLocalUser(userData : any) {
     sessionStorage.setItem('user', JSON.stringify(userData))
     return userData;
 }
-public getLoggedinUser() {
+public getLoggedInUser() {
     return JSON.parse(sessionStorage.getItem('user') || 'null')
 }
 }
