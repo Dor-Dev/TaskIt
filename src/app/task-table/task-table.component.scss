@@ -8,31 +8,62 @@
   .main-card{
     width:90%;
     height: 900px;
-    
-    .table-action{
-      width: 100%;
-      height: 80px;
+    .table-action {
       display: flex;
       
-      .filter{
-        height: 100%;
+    
+      .filter {
         width: 90%;
         
-       }
-       .add-button{
-        background-color: #f5f5f5;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      }
+    
+      .add-button {
         width: 10%;
+        
+        display: flex;
+      justify-content: center;
+     align-items: center;
+        background-color: #f5f5f5;
         height: 72.5%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.42);
         button{
         
-        font-size: 18px;
+              font-size: 18px;
+              }
+      }
+    
+      @media screen and (max-width: 767px) {
+        .filter, .add-button {
+          width: 100%;
+          margin-right: 0;
         }
       }
+      
     }
+    // .table-action{
+    //   width: 100%;
+    //   height: 80px;
+    //   display: flex;
+      
+    //   .filter{
+    //     height: 100%;
+    //     width: 90%;
+        
+    //    }
+    //    .add-button{
+    //     background-color: #f5f5f5;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     width: 10%;
+    //     height: 72.5%;
+    //     border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+    //     button{
+        
+    //     font-size: 18px;
+    //     }
+    //   }
+    // }
     
     
     
@@ -96,3 +127,4 @@
 .mat-mdc-form-field-subscript-wrapper {
   display:none;
 }
+

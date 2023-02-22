@@ -6,16 +6,19 @@ import { Task } from '../model/task';
 @Component({
   selector: 'app-task-dialog',
   templateUrl: './task-dialog.component.html',
-  styleUrls: ['./task-dialog.component.css']
+  styleUrls: ['./task-dialog.component.scss']
 })
 export class TaskDialogComponent implements OnInit{
+  minDate:any;
+
   constructor(
     public dialogRef: MatDialogRef<TaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.minDate = new Date();
   }
+  
 
   onCancelClick(): void {
     this.dialogRef.close();

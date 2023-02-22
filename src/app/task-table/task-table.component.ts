@@ -98,7 +98,7 @@ export class TaskTableComponent implements OnInit{
           description: result.description,
           comment: result.comment,
           date: result.date.toISOString().slice(0,10),
-          status: 'todo'
+          status: 'To Do'
           
         };
         this.taskService.addTask(task).then((ref: DocumentReference<Task>) => {

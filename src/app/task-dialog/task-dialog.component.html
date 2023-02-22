@@ -1,18 +1,29 @@
-<h2 mat-dialog-title>Add Task</h2>
-<div mat-dialog-content>
-    <mat-form-field>
-        <input matInput placeholder="Description" [(ngModel)]="data.description">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="data.date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-        <textarea matInput placeholder="Comment" [(ngModel)]="data.comment"></textarea>
-    </mat-form-field>
+<h2 mat-dialog-title class="dialog-title">Add Task</h2>
+<div mat-dialog-content class="dialog-content">
+    <div class="form-field">
+        <div class="field-header">Description:</div>
+        <mat-form-field>
+            <input matInput placeholder="Description" [(ngModel)]="data.description" class="dialog-input">
+        </mat-form-field>
+    </div>
+    <div class="form-field">
+        <div class="field-header">Date:</div>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Date" [min]="minDate" [(ngModel)]="data.date"
+                class="dialog-input">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="form-field">
+        <div class="field-header">Comment:</div>
+        <mat-form-field>
+            <textarea matInput placeholder="Comment" [(ngModel)]="data.comment" class="dialog-input"></textarea>
+        </mat-form-field>
+    </div>
 </div>
-<div mat-dialog-actions>
-    <button mat-button (click)="onCancelClick()">Cancel</button>
-    <button mat-raised-button color="primary" [disabled]="!data.description" (click)="onSaveClick()">Save</button>
+<div mat-dialog-actions class="dialog-actions">
+    <button mat-button class="dialog-cancel-button" (click)="onCancelClick()">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!data.description" class="dialog-save-button"
+        (click)="onSaveClick()">Save</button>
 </div>
