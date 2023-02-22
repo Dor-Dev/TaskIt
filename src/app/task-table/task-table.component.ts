@@ -24,16 +24,16 @@ export class TaskTableComponent implements OnInit{
 
 
 
-  displayedColumns: string[] = ['index', 'description', 'date', 'status','action'];
+  displayedColumns: string[] = ['index', 'description', 'date','comment', 'status','action'];
   dataSource = new MatTableDataSource<Task>([]);
-
+  isEditMode = false;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
   tasksCollection!: AngularFirestoreCollection<Task>;
   tasks$!: Observable<Task[]>;
-
+  statuses = [  {value: 'To Do', viewValue: 'To Do'},  {value: 'In Progress', viewValue: 'In Progress'},  {value: 'Done', viewValue: 'Done'}];
   constructor(public afs: AngularFirestore,private authService : AuthService,private taskService: TaskService,private dialog: MatDialog) {
     
   }
@@ -45,14 +45,17 @@ export class TaskTableComponent implements OnInit{
     this.dataSource.sort = this.sort;
   }
 
-  
+    
 
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     
     this.dataSource.sort = this.sort;
-    this.paginator.pageSize = 10; 
+    setTimeout(() => {
+      this.paginator.pageSize = 10; 
+    }, 0);
+    
   }
 
   applyFilter(event: Event) {
@@ -63,6 +66,22 @@ export class TaskTableComponent implements OnInit{
       this.dataSource.paginator.firstPage();
     }
   }
+  
+  
+
+
+  async onSave(row: Task) {
+    const taskRef = this.afs.collection<Task>('tasks').doc(await this.taskService.getDocIdByTaskId(row.id));
+    taskRef.update({ description: row.description,status: row.status , comment: row.comment})
+      .then(() => {
+        row.isEditMode = false;
+        console.log('Task updated successfully')}
+        )
+      .catch((error) => console.error('Error updating status: ', error));
+  }
+
+
+
   openAddDialog(): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',
@@ -77,7 +96,8 @@ export class TaskTableComponent implements OnInit{
           index: result.index,
           userID: this.authService.getLoggedInUser().id,
           description: result.description,
-          date: result.date,
+          comment: result.comment,
+          date: result.date.toISOString().slice(0,10),
           status: 'todo'
           
         };
@@ -106,8 +126,4 @@ export class TaskTableComponent implements OnInit{
     
   }
     
-
-  editTask(_t74: any) {
-  throw new Error('Method not implemented.');
-  }
 }
