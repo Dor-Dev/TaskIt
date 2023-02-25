@@ -64,8 +64,7 @@
                                 </mat-form-field>
                             </ng-container>
                             <!-- Render the comment value if not in edit mode -->
-                            <ng-container *ngIf="!this.row.isEditMode">{{row.date.replace('T','
-                                ').slice(0,10)}}</ng-container>
+                            <ng-container *ngIf="!this.row.isEditMode">{{row.date}}</ng-container>
 
 
                         </td>

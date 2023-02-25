@@ -74,12 +74,13 @@ export class TaskTableComponent implements OnInit{
 
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
     
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     setTimeout(() => {
       this.paginator.pageSize = 10; 
-    }, 0);
+    }, 10);
+   
     
   }
   public isDataSourceEmpty(): boolean {
@@ -119,6 +120,8 @@ export class TaskTableComponent implements OnInit{
     } catch (error) {
       row.isEditMode = false;
       row.date = date;
+      console.log(row.date.toLocaleDateString());
+      
       taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: row.date.toLocaleDateString()})
       .then(() => {
         row.isEditMode = false;
