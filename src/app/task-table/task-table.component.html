@@ -21,9 +21,10 @@
         <div *ngIf="!dataArrived" class="overlay">
             <mat-spinner class="spinner" [diameter]="200" [strokeWidth]="15"></mat-spinner>
         </div>
-        <div fxLayout="column" class="task-table" *ngIf="dataArrived">
+        <div fxLayout="column" class="task-table">
+
             <div class="mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource" matSort>
+                <table mat-table [dataSource]="dataSource" matSort *ngIf="dataArrived">
 
                     <!-- ID Column -->
                     <ng-container matColumnDef="index">
@@ -146,9 +147,12 @@
                     </div>
                 </table>
 
-                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
-                    class="paginator"></mat-paginator>
+
+
             </div>
         </div>
+        <mat-paginator [length]="dataSource.data.length" pageSize="10" [pageSizeOptions]="[5, 10, 25, 100]"
+            class="paginator"></mat-paginator>
+
     </mat-card>
 </div>

@@ -16,22 +16,22 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
+
 @Component({
   selector: 'app-task-table',
   templateUrl: './task-table.component.html',
   styleUrls: ['./task-table.component.scss']
 })
-export class TaskTableComponent implements OnInit{
+export class TaskTableComponent implements OnInit,AfterViewInit{
 
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
 
 
   dataArrived = false; 
   displayedColumns: string[] = ['index', 'description', 'date','comment', 'status','action'];
-  dataSource = new MatTableDataSource<Task>([]);
+  dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>([]);
   isEditMode = false;
   minDate:any;
   
@@ -46,13 +46,8 @@ export class TaskTableComponent implements OnInit{
   }
   ngOnInit(): void {
     
-    const user = this.authService.getLoggedInUser();
-    console.log("USER",user);
-    
+    const user = this.authService.getLoggedInUser();   
     this.taskService.getTasksByUser(user.id).subscribe(tasks => {
-      
-    
-    
     this.dataSource.data = tasks.sort((a, b) => {
       return b.createDate - a.createDate; 
     }).map((task,index) => {
@@ -61,12 +56,13 @@ export class TaskTableComponent implements OnInit{
         index: index + 1
       }
     });
-  
+   
     setTimeout(() => {
       this.dataArrived = true;
-    }, 1000);
+    }, 0);
     });
-    this.dataSource.sort = this.sort;
+    
+    
     
   }
 
@@ -74,14 +70,9 @@ export class TaskTableComponent implements OnInit{
 
 
   ngAfterViewInit() {
-    
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    setTimeout(() => {
-      this.paginator.pageSize = 10; 
-    }, 10);
-   
-    
+      
   }
   public isDataSourceEmpty(): boolean {
     return this.dataSource.data.length === 0;
