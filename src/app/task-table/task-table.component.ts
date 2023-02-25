@@ -11,6 +11,8 @@ import { Task } from '../model/task';
 import { TaskService } from '../services/taskService';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -21,28 +23,51 @@ import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 })
 export class TaskTableComponent implements OnInit{
 
-
-
-
-  displayedColumns: string[] = ['index', 'description', 'date','comment', 'status','action'];
-  dataSource = new MatTableDataSource<Task>([]);
-  isEditMode = false;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true })
   sort!: MatSort;
-  tasksCollection!: AngularFirestoreCollection<Task>;
-  tasks$!: Observable<Task[]>;
+
+
+  dataArrived = false; 
+  displayedColumns: string[] = ['index', 'description', 'date','comment', 'status','action'];
+  dataSource = new MatTableDataSource<Task>([]);
+  isEditMode = false;
+  minDate:any;
+  
   statuses = [  {value: 'To Do', viewValue: 'To Do'},  {value: 'In Progress', viewValue: 'In Progress'},  {value: 'Done', viewValue: 'Done'}];
+
+
+
+
+
   constructor(public afs: AngularFirestore,private authService : AuthService,private taskService: TaskService,private dialog: MatDialog) {
     
   }
   ngOnInit(): void {
-    const userID = this.authService.getLoggedInUser().id;
-    this.taskService.getTasksByUser(userID).subscribe(tasks => {
-    this.dataSource.data = tasks.sort((a, b) => a.index - b.index);;
+    
+    const user = this.authService.getLoggedInUser();
+    console.log("USER",user);
+    
+    this.taskService.getTasksByUser(user.id).subscribe(tasks => {
+      
+    
+    
+    this.dataSource.data = tasks.sort((a, b) => {
+      return b.createDate - a.createDate; 
+    }).map((task,index) => {
+      return {
+        ...task,
+        index: index + 1
+      }
+    });
+  
+    setTimeout(() => {
+      this.dataArrived = true;
+    }, 1000);
     });
     this.dataSource.sort = this.sort;
+    
   }
 
     
@@ -57,10 +82,17 @@ export class TaskTableComponent implements OnInit{
     }, 0);
     
   }
-
+  public isDataSourceEmpty(): boolean {
+    return this.dataSource.data.length === 0;
+  }
+  
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filterPredicate = (data: Task, filter: string) => {
+      return data.description.toLowerCase().includes(filter);
+    };
+    this.dataSource.filter = filterValue;
+    
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
@@ -71,13 +103,33 @@ export class TaskTableComponent implements OnInit{
 
 
   async onSave(row: Task) {
-    const taskRef = this.afs.collection<Task>('tasks').doc(await this.taskService.getDocIdByTaskId(row.id));
-    taskRef.update({ description: row.description,status: row.status , comment: row.comment})
+    const taskRef = this.afs.collection<any>('tasks').doc(row.id);
+    console.log(row);
+    const date = new Date(Date.parse(row.date.toString()));
+    try {
+      taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: row.date.toLocaleDateString()})
       .then(() => {
         row.isEditMode = false;
         console.log('Task updated successfully')}
         )
-      .catch((error) => console.error('Error updating status: ', error));
+      .catch((error) => {
+        row.isEditMode = false;
+        console.error('Error updating status: ', error)
+    });
+    } catch (error) {
+      row.isEditMode = false;
+      row.date = date;
+      taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: row.date.toLocaleDateString()})
+      .then(() => {
+        row.isEditMode = false;
+        console.log('Task updated successfully')}
+        )
+      .catch((error) => {
+        row.isEditMode = false;
+        console.error('Error updating status: ', error)
+    });
+    }
+    
   }
 
 
@@ -90,18 +142,23 @@ export class TaskTableComponent implements OnInit{
     
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(result);
-        const task = {
-          id:result.id,
-          index: result.index,
-          userID: this.authService.getLoggedInUser().id,
+        const user = this.authService.getLoggedInUser();
+        
+        
+        const task:any = {
+          userID: user.id,
           description: result.description,
           comment: result.comment,
-          date: result.date.toISOString().slice(0,10),
-          status: 'To Do'
+          date: result.date.toLocaleDateString(),
+          status: 'To Do',
+          createDate: Date.now()
           
         };
+        
+        console.log(task);
+        
         this.taskService.addTask(task).then((ref: DocumentReference<Task>) => {
+          
           console.log('Task added with ID: ', ref.id);
         }).catch((error: any) => {
           console.error('Error adding task: ', error);
@@ -113,17 +170,18 @@ export class TaskTableComponent implements OnInit{
   deleteTask(task: Task): void {
     
       if (confirm('Are you sure you want to delete this task?')) {
-        this.taskService.getDocIdByTaskId(task.id).then((docId: string) => {
-          this.taskService.deleteTask(docId).then(() => {
+          this.taskService.deleteTask(task.id).then(() => {
             console.log('Task deleted');
           }).catch((error: any) => {
             console.error('Error deleting task: ', error);
           });
-        }).catch((error: any) => {
-          console.error('Error getting document ID: ', error);
-        });
       }
     
+  }
+
+  enableEdit(row:Task) {
+    this.minDate = new Date();
+    row.isEditMode = true;
   }
     
 }

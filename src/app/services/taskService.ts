@@ -16,7 +16,19 @@ export class TaskService {
   }
 
   getTasksByUser(userID: string) {
-    return this.afs.collection<Task>('tasks', ref=> ref.where('userID', '==', userID)).valueChanges();
+    const task = this.afs.collection<Task>('tasks', ref=> ref.where('userID', '==', userID)).snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(action => {
+          const data = action.payload.doc.data() as Task;
+          const id = action.payload.doc.id;
+          return { ...data,
+            id
+          };
+        });
+      })
+    );
+    return task;
+    
   }
 
   getTaskById(taskId: string): Observable<Task> {
@@ -38,12 +50,9 @@ export class TaskService {
 addTask(task: Task): Promise<DocumentReference<Task>> {
     const collection = this.afs.collection<Task>('tasks');
     return collection.get().toPromise().then((querySnapshot: QuerySnapshot<Task> | undefined) => {
-      if (querySnapshot) {
-        const index = querySnapshot.size + 1;
-        task.index = index;
-      }
       // set the task ID field
-      task.id = this.afs.createId();
+      console.log("TASK" , task);
+      
       return collection.add(task);
     }).catch((error: any) => {
       console.error('Error adding task: ', error);
@@ -51,21 +60,7 @@ addTask(task: Task): Promise<DocumentReference<Task>> {
     });
   }
 
-  getDocIdByTaskId(taskId: string): Promise<string> {
-    const collection = this.afs.collection<Task>('tasks');
-    const query = collection.ref.where('id', '==', taskId).limit(1);
-    return query.get().then((querySnapshot: QuerySnapshot<Task>) => {
-      if (!querySnapshot.empty) {
-        const docSnapshot = querySnapshot.docs[0];
-        return docSnapshot.id;
-      } else {
-        throw new Error(`No document found with task ID ${taskId}`);
-      }
-    }).catch((error: any) => {
-      console.error(`Error getting document ID for task ${taskId}:`, error);
-      throw error;
-    });
-  }
+
  async deleteTask(docID: string): Promise<void> {
     const collection = this.afs.collection<Task>('tasks');
     return collection.doc(docID).delete().then(() => {

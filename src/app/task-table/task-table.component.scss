@@ -1,3 +1,22 @@
+.tool-bar{
+  height: 10%;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  .spinner {
+    color: #f5f5f5;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 
 .main-div{
   height: 90%;
@@ -7,7 +26,7 @@
   justify-content: center;
   .main-card{
     width:90%;
-    height: 900px;
+    height: 90%;
     .table-action {
       display: flex;
       
@@ -21,8 +40,8 @@
         width: 10%;
         
         display: flex;
-      justify-content: center;
-     align-items: center;
+        justify-content: center;
+        align-items: center;
         background-color: #f5f5f5;
         height: 72.5%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.42);
@@ -40,65 +59,44 @@
       }
       
     }
-    // .table-action{
-    //   width: 100%;
-    //   height: 80px;
-    //   display: flex;
-      
-    //   .filter{
-    //     height: 100%;
-    //     width: 90%;
-        
-    //    }
-    //    .add-button{
-    //     background-color: #f5f5f5;
-    //     display: flex;
-    //     justify-content: center;
-    //     align-items: center;
-    //     width: 10%;
-    //     height: 72.5%;
-    //     border-bottom: 1px solid rgba(0, 0, 0, 0.42);
-    //     button{
-        
-    //     font-size: 18px;
-    //     }
-    //   }
-    // }
     
     
     
      .task-table{
+      display: flex;
       flex-direction: column;
       overflow-y: scroll;
+      
       height: 100%;
       
       table{
         height: 100%;
         
+        
       }
       .idCol{
         width: 10%;
-        text-align: center;
+        text-align: left;
       }
       .descCol{
         width: 30%;
-        text-align: center;
+        text-align: left;
       }
       .dateCol{
         width: 10%;
-        text-align: center;
+        text-align: left;
       }
       .comCol{
         width: 30%;
-        text-align: center;
+        text-align: left;
       }
       .statusCol{
         width: 10%;
-        text-align: center;
+        text-align: left;
       }
       .actionCol{
         width: 10%;
-        text-align: center;
+        text-align: left;
       }
      
       .actions-cell {
@@ -128,3 +126,43 @@
   display:none;
 }
 
+
+@media (max-width: 600px) {
+  .mat-table {
+    overflow-x: auto;
+    display: block;
+    background-color: black;
+  }
+  .mat-header-cell,
+  .mat-cell {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .mat-header-cell {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: inherit;
+    z-index: 1;
+  }
+  .mat-cell {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    position: relative;
+    padding-left: calc(50% - 40px);
+    padding-right: calc(50% - 40px);
+    text-align: left;
+  }
+  .mat-cell:before {
+    content: attr(data-title);
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 40%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
+}

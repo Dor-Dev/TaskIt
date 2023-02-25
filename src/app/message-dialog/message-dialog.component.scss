@@ -1,0 +1,22 @@
+
+
+// Define the styles for the dialog
+.dialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+
+  .dialog-message {
+    font-size: 18px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .dialog-button {
+    width: 100%;
+    max-width: 200px;
+    margin-top: 16px;
+  }
+}

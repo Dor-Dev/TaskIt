@@ -22,7 +22,6 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
-import { TodoComponent } from './todo/todo.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -38,15 +37,19 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { TaskTableComponent } from './task-table/task-table.component';
 import { MatSelectModule } from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DatePipe } from '@angular/common';
+import { MessageDialogComponent } from './message-dialog/message-dialog.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     ToolBarComponent,
-    TodoComponent,
     TaskDialogComponent,
-    TaskTableComponent
+    TaskTableComponent,
+    MessageDialogComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -63,6 +66,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     FormsModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     MatTableModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -80,7 +84,10 @@ import { MatSelectModule } from '@angular/material/select';
     MatExpansionModule,MatNativeDateModule
     
   ],
-  providers: [MatDatepickerModule],
+  providers: [MatDatepickerModule,DatePipe],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+
+ }

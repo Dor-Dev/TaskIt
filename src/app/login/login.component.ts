@@ -23,9 +23,7 @@ export class LoginComponent {
     try {
       const user:any =  this.authService.logIn({email: this.email , password: this.password})
       this.resetForm();
-      console.log(user);
-      
-      // this.router.navigate(['../todo']);
+    
     } catch (error) {
       console.log("ERRRORR");
       throw error;
@@ -35,14 +33,15 @@ export class LoginComponent {
    
   }
 
-  public  signUp():void{
+  public async signUp(){
     try {
-      const user = this.authService.signUp({email: this.email , password: this.password, userName: this.userName});
+      const user = await this.authService.signUp({email: this.email , password: this.password, userName: this.userName});
+      
       this.resetForm();
-      console.log("Sign Up",user);
       this.router.navigate(['../task-table']);
     } catch (error) {
-      console.log("Failed to SignUP")
+      console.log("Failed to SignUP");
+      throw error;
     }
       
   }
@@ -57,16 +56,21 @@ export class LoginComponent {
     console.log(this.loginForm);
     
   }
-  public loginWithGoogle(){
+  public async loginWithGoogle(){
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider)
+    await  signInWithPopup(auth, provider)
       .then((result) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
 
-    const user = result.user;
-    console.log("Credentials: " , credential, "\nUser: ", user);
-    this.authService._saveLocalUser(user);
+    
+    const newUser = {
+      id: result.user.uid,
+      name: result.user.displayName,
+      email: result.user.email
+    };
+    console.log("Credentials: " , credential, "\nUser: ", newUser);
+    this.authService._saveLocalUser(newUser);
     this.router.navigate(['../task-table']);
   }).catch((error) => {
     const errorCode = error.code;
