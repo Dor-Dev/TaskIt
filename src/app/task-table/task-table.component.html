@@ -5,7 +5,9 @@
 </div>
 
 <div fxLayoutAlign="center center" fxLayout.xs="row" fxLayout="column" class="main-div">
+
     <mat-card class="main-card">
+
         <div class="table-action">
             <div class="filter">
                 <mat-form-field style="width: 100%;height:100%;">
@@ -18,12 +20,12 @@
                     <mat-icon>add</mat-icon> </button>
             </div>
         </div>
-        <div *ngIf="!dataArrived" class="overlay">
-            <mat-spinner class="spinner" [diameter]="200" [strokeWidth]="15"></mat-spinner>
-        </div>
-        <div fxLayout="column" class="task-table">
 
-            <div class="mat-elevation-z8">
+        <div fxLayout="column" class="task-table">
+            <div *ngIf="!dataArrived" class="overlay">
+                <mat-spinner class="spinner" [diameter]="200" [strokeWidth]="15"></mat-spinner>
+            </div>
+            <div>
                 <table mat-table [dataSource]="dataSource" matSort *ngIf="dataArrived">
 
                     <!-- ID Column -->
@@ -58,8 +60,9 @@
                             <!-- Render the text field if in edit mode -->
                             <ng-container *ngIf="this.row.isEditMode">
                                 <mat-form-field style="width:100%;">
-                                    <input matInput [matDatepicker]="picker" placeholder="Date" [min]="minDate"
-                                        [(ngModel)]="row.date" class="dialog-input">
+                                    <input matInput [matDatepicker]="picker" placeholder="Date" [value]="row.date"
+                                        [min]="minDate" [(ngModel)]="row.date" [ngModelOptions]="{standalone: true}"
+                                        class="dialog-input">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
@@ -150,9 +153,13 @@
 
 
             </div>
+
+
+
+
         </div>
+
         <mat-paginator [length]="dataSource.data.length" pageSize="10" [pageSizeOptions]="[5, 10, 25, 100]"
             class="paginator"></mat-paginator>
-
     </mat-card>
 </div>

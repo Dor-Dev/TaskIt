@@ -34,6 +34,8 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
   dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>([]);
   isEditMode = false;
   minDate:any;
+  oldDateValue!: Date;
+  newDateValue!: Date;
   
   statuses = [  {value: 'To Do', viewValue: 'To Do'},  {value: 'In Progress', viewValue: 'In Progress'},  {value: 'Done', viewValue: 'Done'}];
 
@@ -97,12 +99,13 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
   async onSave(row: Task) {
     const taskRef = this.afs.collection<any>('tasks').doc(row.id);
     console.log(row);
-    const date = new Date(Date.parse(row.date.toString()));
+    const date = new Date(row.date);
     try {
-      taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: row.date.toLocaleDateString()})
+      
+      await taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: date.toLocaleDateString()})
       .then(() => {
         row.isEditMode = false;
-        console.log('Task updated successfully')}
+        console.log('Task updated successfully',row)}
         )
       .catch((error) => {
         row.isEditMode = false;
@@ -110,18 +113,8 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
     });
     } catch (error) {
       row.isEditMode = false;
-      row.date = date;
-      console.log(row.date.toLocaleDateString());
-      
-      taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: row.date.toLocaleDateString()})
-      .then(() => {
-        row.isEditMode = false;
-        console.log('Task updated successfully')}
-        )
-      .catch((error) => {
-        row.isEditMode = false;
-        console.error('Error updating status: ', error)
-    });
+      console.error('Error updating status: ', error);
+    
     }
     
   }
@@ -175,7 +168,10 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
 
   enableEdit(row:Task) {
     this.minDate = new Date();
+    
     row.isEditMode = true;
+    
+    
   }
     
 }

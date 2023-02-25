@@ -4,7 +4,7 @@ export interface Task {
     id:string,
     userID : string,
     description: string;
-    date: Date;
+    date: any;
     comment: string,
     status: string;
     isEditMode ?: boolean;
