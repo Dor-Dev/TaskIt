@@ -61,7 +61,8 @@ addTask(task: Task): Promise<DocumentReference<Task>> {
   }
 
 
- async deleteTask(docID: string): Promise<void> {
+ async deleteTask(docID?: string): Promise<void> {
+    if(!docID) return;
     const collection = this.afs.collection<Task>('tasks');
     return collection.doc(docID).delete().then(() => {
     console.log(`Task ${docID} deleted successfully`);

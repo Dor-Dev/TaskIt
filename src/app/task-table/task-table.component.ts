@@ -55,7 +55,9 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
     }).map((task,index) => {
       return {
         ...task,
-        index: index + 1
+        index: index + 1,
+        date: task.date.toLocaleString()
+
       }
     });
    
@@ -98,24 +100,25 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
 
   async onSave(row: Task) {
     const taskRef = this.afs.collection<any>('tasks').doc(row.id);
-    console.log(row);
+    console.log("ROWWW",row);
     const date = new Date(row.date);
+    const newDate = date.toLocaleDateString('en-US', { timeZone: 'Asia/Jerusalem' }).replace(',', '');
+    
     try {
       
-      await taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: date.toLocaleDateString()})
+      await taskRef.update({ description: row.description,status: row.status , comment: row.comment, date: newDate})
       .then(() => {
         row.isEditMode = false;
         console.log('Task updated successfully',row)}
-        )
-      .catch((error) => {
-        row.isEditMode = false;
-        console.error('Error updating status: ', error)
-    });
+        );
+      
+    
     } catch (error) {
       row.isEditMode = false;
-      console.error('Error updating status: ', error);
+      console.error('Error #2 updating status: ', error);
     
     }
+  
     
   }
 
@@ -132,13 +135,14 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
         const user = this.authService.getLoggedInUser();
         
         
-        const task:any = {
+        const date = result.date.toLocaleDateString('en-US', { timeZone: 'Asia/Jerusalem' }).replace(',', '');
+        const task:Task = {
           userID: user.id,
           description: result.description,
           comment: result.comment,
-          date: result.date.toLocaleDateString(),
+          date: date,
           status: 'To Do',
-          createDate: Date.now()
+          createDate: Date.now(),
           
         };
         
@@ -170,6 +174,7 @@ export class TaskTableComponent implements OnInit,AfterViewInit{
     this.minDate = new Date();
     
     row.isEditMode = true;
+    console.log("DATE",row.date);
     
     
   }

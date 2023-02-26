@@ -1,13 +1,13 @@
 import { Timestamp } from "rxjs";
 
 export interface Task {
-    id:string,
+    id?:string,
     userID : string,
-    description: string;
-    date: any;
+    description: string,
+    date: string,
     comment: string,
-    status: string;
-    isEditMode ?: boolean;
-    createDate: number;
+    status: string,
+    isEditMode ?: boolean,
+    createDate: number
   }
   
